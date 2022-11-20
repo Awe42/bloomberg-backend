@@ -79,7 +79,7 @@ async def create_order(request: Request, order: OrderModel = Body(...)):
     ### Start matching
     other_side = "BUY" if order["side"] == "SELL" else "SELL"
     comparer = "$lte" if order["side"] == "BUY" else "$gte"
-    matched_orders = await request.app.mongodb["orderbook"].find({"side": other_side, "security": order["security"], "price": {comparer: order["price"]}}).sort("date", -1).to_list(length=100)
+    matched_orders = await request.app.mongodb["orderbook"].find({"user": {"$ne": order["user"]}, "side": other_side, "security": order["security"], "price": {comparer: order["price"]}}).sort("date", -1).to_list(length=100)
     if matched_orders:
         print(matched_orders)
         for matched_order in matched_orders:
