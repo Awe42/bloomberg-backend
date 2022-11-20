@@ -23,12 +23,3 @@ async def shutdown_db_client():
 
 
 app.include_router(todo_router)
-
-
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host=os.getenv('HOST'),
-        reload=os.getenv('DEBUG_MODE'),
-        port=int(os.getenv('PORT')),
-    )
