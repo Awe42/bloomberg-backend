@@ -10,9 +10,8 @@ router = APIRouter()
 
 @router.get("/listPopular", response_description="List most popular stocks in the last hour")
 async def list_popular(request: Request):
-    current_time = datetime.utcnow() - timedelta(days=1)
+    current_time = datetime.utcnow() - timedelta(days=7)
     matched_orders = await request.app.mongodb["matchbook"].find({"date": {"$gte": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f")}}).to_list(length=100)
-    print(matched_orders)
     if matched_orders:
         securities = {}
         for matched_order in matched_orders:
